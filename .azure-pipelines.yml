@@ -1,0 +1,38 @@
+#
+# Azure Pipelines configuration for building and testing urllib3 on Linux, Windows, and macOS.
+#
+
+trigger:
+- master
+
+jobs:
+- job: Mac
+  displayName: 'Mac'
+  pool:
+    vmImage: 'macOS-10.13'
+  strategy:
+    matrix:
+      PythonX:
+        PYTHON_VERSION: '2.7'
+        TOXENV: 'py27'
+  steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(PYTHON_VERSION)'
+        architecture: 'x64'
+      displayName: 'Install Python'
+    - script: env
+    - script: openssl version
+    - script: python -c "import ssl; print(ssl.OPENSSL_VERSION)"
+    - script: ./_travis/install.sh
+      displayName: 'install'
+    - script: ./_travis/run.sh
+      displayName: 'run'
+    - script: ./_travis/upload_coverage.sh
+      displayName: 'upload coverage -- need condition if succeed'
+
+variables:
+  GAE_SDK_PATH: ${HOME}/.cache/google_appengine
+  PYTHONWARNINGS: always::DeprecationWarning
+  PYPI_USERNAME: urllib3
+# PYPI_PASSWORD is set in Travis control panel.
