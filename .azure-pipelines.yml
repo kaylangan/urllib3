@@ -145,7 +145,7 @@ jobs:
     # TODO: activate.bat; codecov
 
 variables:
-  GAE_SDK_PATH: ${HOME}/.cache/google_appengine
+  GAE_SDK_PATH: $(Build.SourcesDirectory)/.cache/google_appengine
   PYTHONWARNINGS: always::DeprecationWarning
   PYPI_USERNAME: urllib3
 # PYPI_PASSWORD is set in Travis control panel.
