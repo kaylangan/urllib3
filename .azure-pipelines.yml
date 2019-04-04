@@ -5,94 +5,142 @@
 trigger:
 - master
 
-strategy:
-  matrix:
-    MacPython27:
-      VM_IMAGE: 'macOS-10.13'
-      PYTHON_VERSION: '2.7'
-      TOXENV: 'py27'
-    MacPython34:
-      VM_IMAGE: 'macOS-10.13'
-      PYTHON_VERSION: '3.4'
-      TOXENV: 'py34'
-    MacPython35:
-      VM_IMAGE: 'macOS-10.13'
-      PYTHON_VERSION: '3.5'
-      TOXENV: 'py35'
-    MacPython36:
-      VM_IMAGE: 'macOS-10.13'
-      PYTHON_VERSION: '3.6'
-      TOXENV: 'py36'
-    MacPython37:
-      VM_IMAGE: 'macOS-10.13'
-      PYTHON_VERSION: '3.7'
-      TOXENV: 'py37'
-    LinuxPython27:
-      VM_IMAGE: 'ubuntu-16.04'
-      PYTHON_VERSION: '2.7'
-      TOXENV: 'py27'
-    LinuxPython27-nobrotli:
-      VM_IMAGE: 'ubuntu-16.04'
-      PYTHON_VERSION: '2.7'
-      TOXENV: 'py27-nobrotli'
-    LinuxPython27-flake8-py3:
-      VM_IMAGE: 'ubuntu-16.04'
-      PYTHON_VERSION: '2.7'
-      TOXENV: 'flake8-py3'
-    LinuxPython27-gae:
-      VM_IMAGE: 'ubuntu-16.04'
-      PYTHON_VERSION: '2.7'
-      TOXENV: 'gae'
-    LinuxPython27-docs:
-      VM_IMAGE: 'ubuntu-16.04'
-      PYTHON_VERSION: '2.7'
-      TOXENV: 'docs'            
-    LinuxPython34:
-      VM_IMAGE: 'ubuntu-16.04'
-      PYTHON_VERSION: '3.4'
-      TOXENV: 'py34'
-    LinuxPython35:
-      VM_IMAGE: 'ubuntu-16.04'
-      PYTHON_VERSION: '3.5'
-      TOXENV: 'py35'
-    LinuxPython36:
-      VM_IMAGE: 'ubuntu-16.04'
-      PYTHON_VERSION: '3.6'
-      TOXENV: 'py36'
-    LinuxPython37:
-      VM_IMAGE: 'ubuntu-16.04'
-      PYTHON_VERSION: '3.7'
-      TOXENV: 'py37'      
-    LinuxPython37-nobrotli:
-      VM_IMAGE: 'ubuntu-16.04'
-      PYTHON_VERSION: '3.7'
-      TOXENV: 'py37-nobrotli'
-    LinuxPython38:
-      VM_IMAGE: 'ubuntu-16.04'
-      PYTHON_VERSION: '3.8'
-      TOXENV: 'py38'
-    LinuxPyPy54:
-      VM_IMAGE: 'ubuntu-16.04'
-      PYTHON_VERSION: 'pypy-5.4'
-      TOXENV: 'pypy'         
-pool:
-  vmImage: $(VM_IMAGE)     
-steps:
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: $(PYTHON_VERSION)
-      architecture: 'x64'
-    displayName: 'Install Python'
-  - script: env
-  - script: openssl version
-  - script: python -c "import ssl; print(ssl.OPENSSL_VERSION)"
-  - script: ./_travis/install.sh
-    displayName: 'install'
-  - script: ./_travis/run.sh
-    displayName: 'run'
-  - script: ./_travis/upload_coverage.sh
-    displayName: 'upload coverage -- need condition if succeed'
-# TODO: integration; deploy
+jobs:
+- job: LinuxMac
+  strategy:
+    matrix:
+      MacPython27:
+        VM_IMAGE: 'macOS-10.13'
+        PYTHON_VERSION: '2.7'
+        TOXENV: 'py27'
+      MacPython34:
+        VM_IMAGE: 'macOS-10.13'
+        PYTHON_VERSION: '3.4'
+        TOXENV: 'py34'
+      MacPython35:
+        VM_IMAGE: 'macOS-10.13'
+        PYTHON_VERSION: '3.5'
+        TOXENV: 'py35'
+      MacPython36:
+        VM_IMAGE: 'macOS-10.13'
+        PYTHON_VERSION: '3.6'
+        TOXENV: 'py36'
+      MacPython37:
+        VM_IMAGE: 'macOS-10.13'
+        PYTHON_VERSION: '3.7'
+        TOXENV: 'py37'
+      LinuxPython27:
+        VM_IMAGE: 'ubuntu-16.04'
+        PYTHON_VERSION: '2.7'
+        TOXENV: 'py27'
+      LinuxPython27-nobrotli:
+        VM_IMAGE: 'ubuntu-16.04'
+        PYTHON_VERSION: '2.7'
+        TOXENV: 'py27-nobrotli'
+      LinuxPython27-flake8-py3:
+        VM_IMAGE: 'ubuntu-16.04'
+        PYTHON_VERSION: '2.7'
+        TOXENV: 'flake8-py3'
+      LinuxPython27-gae:
+        VM_IMAGE: 'ubuntu-16.04'
+        PYTHON_VERSION: '2.7'
+        TOXENV: 'gae'
+      LinuxPython27-docs:
+        VM_IMAGE: 'ubuntu-16.04'
+        PYTHON_VERSION: '2.7'
+        TOXENV: 'docs'            
+      LinuxPython34:
+        VM_IMAGE: 'ubuntu-16.04'
+        PYTHON_VERSION: '3.4'
+        TOXENV: 'py34'
+      LinuxPython35:
+        VM_IMAGE: 'ubuntu-16.04'
+        PYTHON_VERSION: '3.5'
+        TOXENV: 'py35'
+      LinuxPython36:
+        VM_IMAGE: 'ubuntu-16.04'
+        PYTHON_VERSION: '3.6'
+        TOXENV: 'py36'
+      LinuxPython37:
+        VM_IMAGE: 'ubuntu-16.04'
+        PYTHON_VERSION: '3.7'
+        TOXENV: 'py37'      
+      LinuxPython37-nobrotli:
+        VM_IMAGE: 'ubuntu-16.04'
+        PYTHON_VERSION: '3.7'
+        TOXENV: 'py37-nobrotli'
+      LinuxPython38:
+        VM_IMAGE: 'ubuntu-16.04'
+        PYTHON_VERSION: '3.8'
+        TOXENV: 'py38'
+      LinuxPyPy54:
+        VM_IMAGE: 'ubuntu-16.04'
+        PYTHON_VERSION: 'pypy-5.4'
+        TOXENV: 'pypy'         
+  pool:
+    vmImage: $(VM_IMAGE)     
+  steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: $(PYTHON_VERSION)
+        architecture: 'x64'
+      displayName: 'Install Python'
+    - script: env
+      displayName: 'env'
+    - script: openssl version
+      displayName: 'openssl version'
+    - script: python -c "import ssl; print(ssl.OPENSSL_VERSION)"
+      displayName: 'import ssl'
+    - script: ./_travis/install.sh
+      displayName: 'install'
+    - script: ./_travis/run.sh
+      displayName: 'run'
+    - script: ./_travis/upload_coverage.sh
+      displayName: 'upload coverage -- need condition if succeed'
+  # TODO: integration; deploy
+
+- job: Windows
+  strategy:
+    matrix:
+      WindowsPython27:
+        VM_IMAGE: 'vs2017-win2016'
+        PYTHON_VERSION: '2.7'
+        TOXENV: 'py27'
+      WindowsPython27-nobrotli:
+        VM_IMAGE: 'vs2017-win2016'
+        PYTHON_VERSION: '2.7'
+        TOXENV: 'py27-nobrotli'       
+      WindowsPython34:
+        VM_IMAGE: 'vs2017-win2016'
+        PYTHON_VERSION: '3.4'
+        TOXENV: 'py34'
+      WindowsPython35:
+        VM_IMAGE: 'vs2017-win2016'
+        PYTHON_VERSION: '3.5'
+        TOXENV: 'py35'
+      WindowsPython36:
+        VM_IMAGE: 'vs2017-win2016'
+        PYTHON_VERSION: '3.6'
+        TOXENV: 'py36'
+      WindowsPython37:
+        VM_IMAGE: 'vs2017-win2016'
+        PYTHON_VERSION: '3.7'
+        TOXENV: 'py37'
+      WindowsPython37-nobrotli:
+        VM_IMAGE: 'vs2017-win2016'
+        PYTHON_VERSION: '3.7'
+        TOXENV: 'py37-nobrotli'                                                
+  pool:
+    vmImage: $(VM_IMAGE)     
+  steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: $(PYTHON_VERSION)
+        architecture: 'x64'
+      displayName: 'Install Python'
+    - script: tox
+      displayName: 'test: tox'
+    # TODO: activate.bat; codecov
 
 variables:
   GAE_SDK_PATH: ${HOME}/.cache/google_appengine
