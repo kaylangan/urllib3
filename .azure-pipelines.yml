@@ -144,6 +144,56 @@ jobs:
       displayName: 'test: tox'
     # TODO: activate.bat; codecov
 
+- job: NotInstalled1
+  strategy:
+    matrix:
+      LinuxPython38:
+        VM_IMAGE: 'ubuntu-16.04'
+        PYTHON_VERSION: '3.8'
+        TOXENV: 'py38'    
+  pool:
+    vmImage: $(VM_IMAGE)     
+  steps:
+    - script: sudo apt-get install python3.8
+    - script: env
+      displayName: 'env'
+    - script: openssl version
+      displayName: 'openssl version'
+    - script: python -c "import ssl; print(ssl.OPENSSL_VERSION)"
+      displayName: 'import ssl'
+    - script: ./_travis/install.sh
+      displayName: 'install'
+    - script: ./_travis/run.sh
+      displayName: 'run'
+    - script: ./_travis/upload_coverage.sh
+      displayName: 'upload coverage -- need condition if succeed'
+  # TODO: integration; deploy
+
+- job: NotInstalled2
+  strategy:
+    matrix:
+      LinuxPyPy54:
+        VM_IMAGE: 'ubuntu-16.04'
+        PYTHON_VERSION: 'pypy-5.4'
+        TOXENV: 'pypy'         
+  pool:
+    vmImage: $(VM_IMAGE)     
+  steps:
+    - script: sudo apt-get install pypy5.4
+    - script: env
+      displayName: 'env'
+    - script: openssl version
+      displayName: 'openssl version'
+    - script: python -c "import ssl; print(ssl.OPENSSL_VERSION)"
+      displayName: 'import ssl'
+    - script: ./_travis/install.sh
+      displayName: 'install'
+    - script: ./_travis/run.sh
+      displayName: 'run'
+    - script: ./_travis/upload_coverage.sh
+      displayName: 'upload coverage -- need condition if succeed'
+  # TODO: integration; deploy
+
 variables:
   GAE_SDK_PATH: $(Build.SourcesDirectory)/.cache/google_appengine
   PYTHONWARNINGS: always::DeprecationWarning
