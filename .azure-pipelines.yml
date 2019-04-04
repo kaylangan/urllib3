@@ -154,7 +154,16 @@ jobs:
   pool:
     vmImage: $(VM_IMAGE)     
   steps:
-    - script: sudo apt-get install python3.8
+    - script: |
+        sudo apt-get install -y git
+        sudo apt-get install -y build-essential libbz2-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev tk-dev
+    - script: |
+        curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+    - script: |
+        export PATH="~/.pyenv/bin:$PATH"
+        eval "$(pyenv init -)"
+        eval "$(pyenv virtualenv-init -)"
+    - script: pyenv install 3.8
     - script: env
       displayName: 'env'
     - script: openssl version
@@ -179,7 +188,14 @@ jobs:
   pool:
     vmImage: $(VM_IMAGE)     
   steps:
-    - script: sudo apt-get install pypy5.4
+    - script: |
+        sudo add-apt-repository ppa:pypy/ppa
+        sudo apt-get update
+        sudo apt-get install pypy pypy-dev pypy-tk
+    - script: |
+        wget -O - https://bootstrap.pypa.io/get-pip.py | sudo -H pypy -
+        sudo cp /usr/bin/{pip,pipy}
+        sudo sed -i -e "s/python/pypy/" -e "s/==/>=/g" /usr/bin/pipy
     - script: env
       displayName: 'env'
     - script: openssl version
