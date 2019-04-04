@@ -138,6 +138,8 @@ jobs:
         versionSpec: $(PYTHON_VERSION)
         architecture: 'x64'
       displayName: 'Install Python'
+    - script: pip install tox virtualenv
+      displayName: 'Install tox'
     - script: tox
       displayName: 'test: tox'
     # TODO: activate.bat; codecov
