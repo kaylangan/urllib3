@@ -33,10 +33,12 @@ jobs:
         VM_IMAGE: 'ubuntu-16.04'
         PYTHON_VERSION: '2.7'
         TOXENV: 'py27'
+        AZURE_PIPELINES_ALLOW_FAILURE: true
       LinuxPython27-nobrotli:
         VM_IMAGE: 'ubuntu-16.04'
         PYTHON_VERSION: '2.7'
         TOXENV: 'py27-nobrotli'
+        AZURE_PIPELINES_ALLOW_FAILURE: true
       LinuxPython27-flake8-py3:
         VM_IMAGE: 'ubuntu-16.04'
         PYTHON_VERSION: '2.7'
@@ -57,14 +59,17 @@ jobs:
         VM_IMAGE: 'ubuntu-16.04'
         PYTHON_VERSION: '3.5'
         TOXENV: 'py35'
+        AZURE_PIPELINES_ALLOW_FAILURE: true
       LinuxPython36:
         VM_IMAGE: 'ubuntu-16.04'
         PYTHON_VERSION: '3.6'
         TOXENV: 'py36'
+        AZURE_PIPELINES_ALLOW_FAILURE: true
       LinuxPython37:
         VM_IMAGE: 'ubuntu-16.04'
         PYTHON_VERSION: '3.7'
-        TOXENV: 'py37'      
+        TOXENV: 'py37'
+        AZURE_PIPELINES_ALLOW_FAILURE: true  
       LinuxPython37-nobrotli:
         VM_IMAGE: 'ubuntu-16.04'
         PYTHON_VERSION: '3.7'
@@ -211,6 +216,7 @@ jobs:
   # TODO: integration; deploy
 
 variables:
+  AZURE_PIPELINES_ALLOW_FAILURE: false
   GAE_SDK_PATH: $(Build.SourcesDirectory)/.cache/google_appengine
   PYTHONWARNINGS: always::DeprecationWarning
   PYPI_USERNAME: urllib3
