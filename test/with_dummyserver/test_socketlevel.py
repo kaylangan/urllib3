@@ -371,7 +371,7 @@ class TestSocketClosing(SocketDummyServerTestCase):
 
         self._start_server(socket_handler)
         http = HTTPConnectionPool(self.host, self.port,
-                                  timeout=0.01,
+                                  timeout=0.50,
                                   retries=False,
                                   maxsize=3,
                                   block=True)
